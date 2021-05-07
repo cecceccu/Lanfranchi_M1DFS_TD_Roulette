@@ -1,6 +1,8 @@
 import org.assertj.core.internal.bytebuddy.asm.Advice;
 import org.junit.Ignore;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -23,14 +25,15 @@ public class RouletteTest {
     {
         values = new ArrayList<Integer>();
     }
-    @AfterAll
+    @AfterEach
     void cleanUpResultsList()
     {
         values = null;
     }
 
-    @Test
+    @ParameterizedTest
     @Timeout(value = 22000, unit = TimeUnit.MILLISECONDS)
+    @ValueSource(ints = {3})
     void testRouletteStoppedSpinning(int randomSeed)
     {
         roulette = new Roulette(randomSeed);
@@ -38,7 +41,8 @@ public class RouletteTest {
         Assertions.assertFalse(roulette.isSpinning());
     }
 
-    @Test
+    @ParameterizedTest
+    @ValueSource(ints = {0, 42})
     void testResultIsBetweenBounds(int randomSeed)
     {
         roulette = new Roulette(randomSeed);
@@ -48,8 +52,9 @@ public class RouletteTest {
 
     }
 
-    @Test
     @Ignore("Test ignored for now as it would require 500 000 spins lasting 20 seconds each")
+    @ParameterizedTest
+    @ValueSource(ints = {77})
     void testResultNotConstant(int randomSeed)
     {
         ArrayList<Integer> expectedValues = new ArrayList<>();
@@ -63,7 +68,7 @@ public class RouletteTest {
         int result;
         roulette = new Roulette(randomSeed);
 
-        for (int j=0; spinNumber; j++)
+        for (int j=0; j<spinNumber; j++)
         {
             result = roulette.spin();
             values.add(result);
