@@ -1,5 +1,6 @@
 import java.util.Random;
 
+
 public class Roulette {
     private Random seed;
     private boolean isSpinning;
@@ -15,20 +16,27 @@ public class Roulette {
     }
 
     public int spin() {
-        int result = -1;
+        spinFor20Seconds();
+        return calculateResult();
+
+    }
+
+    public void spinFor20Seconds()
+    {
         isSpinning = true;
 
         try
         {
             Thread.sleep(20000);
         }
-        catch(InterruptedException ex)
-        {
+        catch(InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
-        result = seed.nextInt(37);
         isSpinning = false;
-        return result;
+    }
 
+    public int calculateResult()
+    {
+        return seed.nextInt(37);
     }
 }

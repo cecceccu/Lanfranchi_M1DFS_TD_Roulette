@@ -3,14 +3,22 @@ import org.junit.Ignore;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.LOCAL_TIME;
+
+
+@RunWith(MockitoJUnitRunner.class)
 
 public class RouletteTest {
+
 
     Roulette roulette;
     ArrayList<Integer> values;
@@ -34,10 +42,14 @@ public class RouletteTest {
     @ParameterizedTest
     @Timeout(value = 22000, unit = TimeUnit.MILLISECONDS)
     @ValueSource(ints = {3})
-    void testRouletteStoppedSpinning(int randomSeed)
+    void testRouletteSpinsFor20Secs(int randomSeed)
     {
+        long start = System.currentTimeMillis();
         roulette = new Roulette(randomSeed);
-        roulette.spin();
+        roulette.spinFor20Seconds();
+        long end = System.currentTimeMillis();
+        long duration = end-start;
+        Assertions.assertTrue(duration>19000);
         Assertions.assertFalse(roulette.isSpinning());
     }
 
@@ -46,7 +58,7 @@ public class RouletteTest {
     void testResultIsBetweenBounds(int randomSeed)
     {
         roulette = new Roulette(randomSeed);
-        int result = roulette.spin();
+        int result = roulette.calculateResult();
         Assertions.assertTrue(result>=0);
         Assertions.assertTrue(result <= 36);
 
@@ -57,6 +69,7 @@ public class RouletteTest {
     @ValueSource(ints = {77})
     void testResultNotConstant(int randomSeed)
     {
+
         ArrayList<Integer> expectedValues = new ArrayList<>();
         for (int i=0; i<=36; i++)
         {
@@ -70,7 +83,7 @@ public class RouletteTest {
 
         for (int j=0; j<spinNumber; j++)
         {
-            result = roulette.spin();
+            result = roulette.calculateResult();
             values.add(result);
         }
 
