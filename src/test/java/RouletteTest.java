@@ -67,8 +67,7 @@ public class RouletteTest {
         Assertions.assertTrue(result <= 36);
 
     }
-
-    @Ignore("Test ignored for now as it would require 500 000 spins lasting 20 seconds each")
+    
     @ParameterizedTest
     @ValueSource(ints = {77})
     void testResultNotConstant(int randomSeed)
