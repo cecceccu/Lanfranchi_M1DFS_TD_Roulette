@@ -4,6 +4,8 @@ import java.util.Random;
 public class Roulette {
     private Random seed;
     private boolean isSpinning;
+    private String color = "";
+    private int value = -1;
 
 
     public Roulette(int randomSeed) {
@@ -15,10 +17,9 @@ public class Roulette {
         return isSpinning;
     }
 
-    public int spin() {
+    public void spin() {
         spinFor20Seconds();
-        return calculateResult();
-
+        calculateResult();
     }
 
     public void spinFor20Seconds()
@@ -35,8 +36,19 @@ public class Roulette {
         isSpinning = false;
     }
 
-    public int calculateResult()
+    public void calculateResult()
     {
-        return seed.nextInt(37);
+        value = seed.nextInt(37);
+        color = value % 2 == 0?"Black":"Red";
+    }
+
+    public int getValue()
+    {
+        return value;
+    }
+
+    public String getColor()
+    {
+        return color;
     }
 }
