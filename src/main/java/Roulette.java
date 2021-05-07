@@ -4,8 +4,8 @@ import java.util.Random;
 public class Roulette {
     private Random seed;
     private boolean isSpinning;
-    private String color = "";
-    private int value = -1;
+    public String color = "";
+    public int value = -1;
 
 
     public Roulette(int randomSeed) {
@@ -40,6 +40,8 @@ public class Roulette {
     {
         value = seed.nextInt(37);
         color = value % 2 == 0?"Black":"Red";
+        if (value == 0)
+            color = "Green";
     }
 
     public int getValue()

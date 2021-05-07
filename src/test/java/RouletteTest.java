@@ -105,8 +105,9 @@ public class RouletteTest {
         roulette = new Roulette(randomSeed);
         roulette.calculateResult();
         int result = roulette.getValue();
-        Assertions.assertTrue((result % 2 == 0 && roulette.getColor() == "Black")
-                                || (result % 2 == 1 && roulette.getColor() == "Red"));
+        Assertions.assertTrue((result % 2 == 0 && result != 0 && roulette.getColor() == "Black")
+                                || (result % 2 == 1 && roulette.getColor() == "Red")
+                                || (result == 0 && roulette.getColor() == "Green"));
 
     }
 
